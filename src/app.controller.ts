@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -13,5 +13,11 @@ export class AppController {
   @Get("/employees")
   getEmployees() {
     return this.appService.getEmployees();
+  }
+
+  @Get("employee-photo/:employeeId")
+  async getEmployeePhoto(@Param("employeeId") employeeId: number, @Res() res) {
+    const stream = await this.appService.getEmployeePhoto(employeeId);
+    return stream.pipe(res);
   }
 }
